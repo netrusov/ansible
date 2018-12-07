@@ -1,0 +1,7 @@
+---
+elastic:
+  node:
+    balancer: true
+  http:
+    enabled: true
+    port: 9200

@@ -1,0 +1,56 @@
+# {{ ansible_managed }}
+global
+    log     /dev/log local0
+    log     /dev/log local1 notice
+    chroot  /var/lib/haproxy
+    pidfile /var/run/haproxy.pid
+    user    haproxy
+    group   haproxy
+    daemon
+
+defaults
+    log     global
+    mode    tcp
+    option  tcplog
+    option  dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+# syslog
+listen syslog_events :{{ syslog.port }}
+    balance roundrobin
+    option  tcpka
+{% for host in groups['logstash-listener'] %}
+    server {{ host }} {{ hostvars[host]['ansible_host'] }}:{{ syslog.port }} check inter 5000
+{% endfor %}
+
+# nxlog
+listen nxlog_events :5140
+    balance roundrobin
+    option  tcpka
+{% for host in groups['logstash-listener'] %}
+    server {{ host }} {{ hostvars[host]['ansible_host'] }}:{{ syslog.port }} check inter 5000
+{% endfor %}
+
+# filebeat
+listen syslog_events :{{ haproxy.ports.filebeat }}
+    balance roundrobin
+    option  tcpka
+{% for host in groups['logstash-listener'] %}
+    server {{ host }} {{ hostvars[host]['ansible_host'] }}:{{ haproxy.ports.filebeat }} check inter 5000
+{% endfor %}
+
+# elastic
+listen syslog_events :{{ haproxy.ports.elastic }}
+    option  tcpka
+{% for host in groups['elastic-balancer'] %}
+    server {{ host }} {{ hostvars[host]['ansible_host'] }}:{{ haproxy.ports.elastic }} check inter 5000
+{% endfor %}
+
+listen stats :1936
+    mode  http
+    stats show-legends
+    stats refresh 5s
+    stats hide-version
+    stats uri /

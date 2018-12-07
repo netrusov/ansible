@@ -1,0 +1,4 @@
+---
+syslog:
+  server.ip: 20.0.0.151
+  port: 10514

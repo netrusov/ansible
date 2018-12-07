@@ -1,0 +1,9 @@
+---
+elastic:
+  cluster:
+    name: logs
+  index:
+    number_of_shads: 2
+    number_of_replicas: 1
+  bootstrap:
+    mlockall: true

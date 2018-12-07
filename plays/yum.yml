@@ -1,0 +1,11 @@
+---
+- hosts: '{{ host }}'
+  become: yes
+  environment:
+    http_proxy: 'http://localhost:3128'
+    https_proxy: 'http://localhost:3128'
+    ftp_proxy: 'http://localhost:3128'
+
+  tasks:
+    - name: install package
+      yum: "name={{ name }} state={{ state|default('latest') }}"

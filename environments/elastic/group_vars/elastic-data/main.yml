@@ -1,0 +1,7 @@
+---
+elastic:
+  node:
+    data: true
+  path:
+    data: /elastic/data
+    logs: /elastic/logs

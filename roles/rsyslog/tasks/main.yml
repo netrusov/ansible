@@ -1,0 +1,15 @@
+---
+- name: Skip CentOS 5 hosts
+  command: /bin/false
+  when: ansible_distribution_major_version == "5"
+  tags:
+    - always
+
+- include: install.yml
+  tags:
+    - install
+
+- include: configure.yml
+  tags:
+    - install
+    - configure

@@ -1,0 +1,61 @@
+### Host declaration
+##############################
+
+[staging]
+# Ansible master node
+smosansible01	ansible_connection=local
+
+# ElasticSearch
+smoses01	ansible_host=20.0.0.101
+smoses02	ansible_host=20.0.0.102
+smoses11	ansible_host=20.0.0.111
+smoses12	ansible_host=20.0.0.112
+smoses21	ansible_host=20.0.0.121
+
+# Logstash
+smoslog01	ansible_host=20.0.0.131
+smoslog11	ansible_host=20.0.0.141
+
+# HAProxy
+smoslog21	ansible_host=20.0.0.151
+
+# MQ
+smosmq01	ansible_host=20.0.0.161
+
+### Host groups
+##############################
+
+[master]
+smosansible01
+
+[elastic-master]
+smoses01
+smoses02
+
+[elastic-data]
+smoses11
+smoses12
+
+[elastic-balancer]
+smoses21
+
+[elastic:children]
+elastic-master
+elastic-data
+elastic-balancer
+
+[logstash-listener]
+smoslog01
+
+[logstash-filter]
+smoslog11
+
+[logstash:children]
+logstash-listener
+logstash-filter
+
+[haproxy]
+smoslog21
+
+[redis]
+smosmq01

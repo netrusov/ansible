@@ -1,0 +1,14 @@
+---
+- name: Add Zabbix GPG key
+  rpm_key:
+    key: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX"
+    state: present
+
+- name: Add Zabbix repository
+  template:
+    src: zabbix.repo.j2
+    dest: /etc/yum.repos.d/zabbix.repo
+    mode: 0644
+
+- name: Install Zabbix Agent
+  yum: name=zabbix-agent state=latest

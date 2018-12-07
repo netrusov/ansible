@@ -1,0 +1,4 @@
+---
+logstash:
+  node:
+    filter: true

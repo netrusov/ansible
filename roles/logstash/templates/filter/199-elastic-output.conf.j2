@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+output {
+  elasticsearch {
+    hosts => [ {{ groups['elastic-balancer']|wrap|join(', ') }} ]
+    index => "logstash-%{type}-%{+YYYY.MM.dd}"
+  }
+}

@@ -1,0 +1,3 @@
+$template ls_json,"{ %timestamp:::date-rfc3339,jsonf:syslog_timestamp%,%fromhost-ip:::jsonf:clientip%,%source:::jsonf:host%,%msg:::jsonf:message%,%syslogfacility-text:::jsonf:facility%,%syslogseverity-text:::jsonf:severity%,%app-name:::jsonf:program%,%procid:::jsonf:processid% }"
+
+*.* @@{{ syslog.server.ip }}:{{ syslog.port }};ls_json

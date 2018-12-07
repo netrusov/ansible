@@ -1,0 +1,14 @@
+---
+- name: Configure rsyslog repo
+  template:
+    src: rsyslog.repo.j2
+    dest: /etc/yum.repos.d/rsyslog.repo
+    mode: 0644
+
+- name: Add rsyslog GPG key
+  rpm_key:
+    key: http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
+    state: present
+
+- name: Install rsyslog
+  yum: name=rsyslog state=latest

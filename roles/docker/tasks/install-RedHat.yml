@@ -1,0 +1,14 @@
+---
+- name: Add docker GPG key
+  rpm_key:
+    key: "https://yum.dockerproject.org/gpg"
+    state: present
+
+- name: Add docker repository
+  copy:
+    src: docker-main.repo
+    dest: /etc/yum.repos.d/docker-main.repo
+    mode: 0644
+
+- name: Install docker
+  yum: name=docker state=latest

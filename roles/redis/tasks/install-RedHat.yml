@@ -1,0 +1,6 @@
+---
+- name: Ensure EPEL repository is present
+  yum: name=epel-release state=latest
+
+- name: Install Redis
+  yum: name=redis state=latest

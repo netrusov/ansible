@@ -1,0 +1,11 @@
+---
+- include: install-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: install-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+# Required for ansible 'docker' module
+- name: Install docker-py
+  pip:
+    name: docker-py

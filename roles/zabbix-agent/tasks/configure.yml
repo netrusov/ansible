@@ -1,0 +1,15 @@
+---
+- name: Configure Zabbix Agent
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+    owner: zabbix
+    group: zabbix
+  notify: restart-zabbix-agent
+
+- name: Bug fix for CentOS 7
+  shell: systemctl enable zabbix-agent
+  when: ansible_distribution_major_version == '7'
+
+- name: Ensure Zabbix Agent started and enabled on boot
+  service: name=zabbix-agent state=started enabled=yes

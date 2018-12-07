@@ -1,0 +1,40 @@
+# {{ ansible_managed }}
+---
+{# Cluster #}
+{# ############################################### #}
+cluster.name: {{ elastic.cluster.name }}
+
+{# Node #}
+{# ############################################### #}
+node.name: {{ inventory_hostname }}
+node.data: {{ elastic.node.data|default(false)|bool|lower }}
+node.master: {{ elastic.node.master|default(false)|bool|lower }}
+{% if elastic.node.data is defined %}
+path.data: {{ elastic.path.data }}
+path.logs: {{ elastic.path.logs }}
+{% endif %}
+
+{# Index #}
+{# ############################################### #}
+index.number_of_shards: {{ elastic.index.number_of_shards|default(2) }}
+index.number_of_replicas: {{ elastic.index.number_of_replicas|default(1) }}
+
+{# Network #}
+{# ############################################### #}
+{% if elastic.node.balancer is defined %}
+network.host: {{ ansible_host }}
+http.port: {{ elastic.http.port|default(9200) }}
+http.enabled: true
+{% else %}
+transport.host: {{ ansible_host }}
+http.enabled: false
+{% endif %}
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts:
+{% for host in groups['elastic-master'] %}
+  - {{ host }}
+{% endfor %}
+
+{# System #}
+{# ############################################### #}
+bootstrap.mlockall: {{ elastic.bootstrap.mlockall|default(false)|bool|lower }}

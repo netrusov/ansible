@@ -1,0 +1,12 @@
+---
+- name: update system
+  yum: name=* state=latest
+
+- name: install required packages
+  yum: name='{{ item }}' state=latest
+  with_items:
+    - '{{ common_packages }}'
+
+- name: install python pip module
+  easy_install:
+    name: pip

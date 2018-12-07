@@ -1,0 +1,17 @@
+---
+- hosts: "{{ host }}"
+  become: yes
+  environment:
+    http_proxy: 'http://localhost:3128'
+    https_proxy: 'http://localhost:3128'
+    ftp_proxy: 'http://localhost:3128'
+
+  tasks:
+    - name: Install License plugin
+      shell: /usr/share/elasticsearch/bin/plugin -DproxyHost=localhost -DproxyPort=3128 install license
+
+    - name: Install Marvel agent plugin
+      shell: /usr/share/elasticsearch/bin/plugin -DproxyHost=localhost -DproxyPort=3128 install marvel-agent
+
+    - name: Deploy Marvel into Kibana
+      shell: /opt/kibana/bin/kibana plugin --install elasticsearch/marvel/latest

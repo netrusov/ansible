@@ -1,0 +1,8 @@
+---
+- name: Configure Logstash listener
+  template:
+    src: "listener/{{ item }}.j2"
+    dest: "/etc/logstash/conf.d/{{ item }}"
+    mode: 0644
+  with_items: '{{ logstash.templates.listener }}'
+  notify: restart-logstash

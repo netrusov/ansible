@@ -1,0 +1,23 @@
+---
+- name: Ensure rsyslog includes configs from /etc/rsyslog.d
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: '^\$IncludeConfig'
+    line: '$IncludeConfig /etc/rsyslog.d/*.conf'
+    state: present
+  notify: restart-rsyslog
+
+- name: Ensure /etc/rsyslog.d exists
+  file:
+    path: /etc/rsyslog.d
+    state: directory
+
+- name: Configure rsyslog+Logstash
+  template:
+    src: logstash.conf.j2
+    dest: /etc/rsyslog.d/logstash.conf
+    mode: 0644
+  notify: restart-rsyslog
+
+- name: Ensure rsyslog started and enabled on boot
+  service: name=rsyslog state=started enabled=yes

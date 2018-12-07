@@ -1,0 +1,29 @@
+---
+- hosts: '{{ host }}'
+  gather_facts: no
+  become: yes
+
+  vars_prompt:
+    - name: username
+      prompt: Enter username
+      private: no
+
+    - name: password
+      prompt: Enter password
+      confirm: yes
+      private: yes
+      encrypt: sha512_crypt
+      salt_size: 7
+
+  tasks:
+    - name: create user
+      user: "name={{ username }} password={{ password }}"
+
+    - name: grant sudo privileges
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^{{ username }} ALL\='
+        line: '{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+      when: sudoer|default(false)

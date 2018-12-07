@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+filebeat:
+  prospectors:
+#    -
+#      paths:
+#        - "/var/log/*.log"
+output:
+  logstash:
+    enabled: false # enable after configuration
+    hosts:
+{% for host in groups['haproxy'] %}
+    - {{ hostvars[host]['ansible_host'] }}:{{ filebeat.port }}
+{% endfor %}

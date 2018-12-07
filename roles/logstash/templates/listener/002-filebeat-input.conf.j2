@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+input {
+    beats {
+        port => {{ logstash.ports.filebeat }}
+    }
+}

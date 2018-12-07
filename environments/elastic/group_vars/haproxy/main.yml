@@ -1,0 +1,6 @@
+---
+haproxy:
+  ports:
+    syslog: 10514
+    elastic: 9200
+    filebeat: 5044

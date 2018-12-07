@@ -1,0 +1,9 @@
+---
+- include: configure-listener.yml
+  when: logstash.node.listener
+
+- include: configure-filter.yml
+  when: logstash.node.filter
+
+- name: Ensure Logstash is started and enabled on boot
+  service: name=logstash state=started enabled=yes

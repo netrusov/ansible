@@ -1,0 +1,12 @@
+---
+- hosts: "{{ host }}"
+  become: yes
+
+  handlers:
+    - name: restart-elasticsearch
+      service: name=elasticsearch state=restarted
+
+  tasks:
+    - name: Install ElasticSearch plugin
+      shell: /usr/share/elasticsearch/bin/plugin -DproxyHost=localhost -DproxyPort=3128 '{{ action|default("install") }}' '{{ plugin }}'
+      notify: restart-elasticsearch

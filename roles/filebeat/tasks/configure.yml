@@ -1,0 +1,10 @@
+---
+- name: Configure filebeat
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    mode: 0644
+  notify: restart-filebeat
+
+- name: Ensure filebeat started and enabled on boot
+  service: name=filebeat state=started enabled=yes

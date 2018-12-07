@@ -1,0 +1,5 @@
+---
+proxy:
+  http_proxy: 'http://localhost:3128'
+  https_proxy: 'http://localhost:3128'
+  ftp_proxy: 'http://localhost:3128'

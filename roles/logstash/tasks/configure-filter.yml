@@ -1,0 +1,8 @@
+---
+- name: Configure Logstash filter
+  template:
+    src: "filter/{{ item }}.j2"
+    dest: "/etc/logstash/conf.d/{{ item }}"
+    mode: 0644
+  with_items: '{{ logstash.templates.filter }}'
+  notify: restart-logstash

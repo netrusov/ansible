@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+input {
+  redis {
+    host => '{{ groups['redis'][0] }}'
+    data_type => 'list'
+    key => 'logstash'
+    type => 'redis-input'
+  }
+}

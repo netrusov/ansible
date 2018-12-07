@@ -1,0 +1,34 @@
+---
+- hosts: '{{ host }}'
+  become: yes
+  environment:
+    http_proxy: 'http://localhost:3128'
+    https_proxy: 'http://localhost:3128'
+    ftp_proxy: 'http://localhost:3128'
+
+  tasks:
+    - name: Register server in Zabbix
+      local_action:
+        module: zabbix_host
+        force: no
+        server_url: '{{ zabbix.server.url }}'
+        login_user: '{{ zabbix.login.user }}'
+        login_password: '{{ zabbix.login.password }}'
+        host_name: '{{ inventory_hostname }}'
+        host_groups:
+          - "{{ ansible_system }} Servers"
+        link_templates:
+          - "Template OS {{ ansible_system }}"
+        status: enabled
+        state: present
+        interfaces:
+          -
+            type: 1
+            main: 1
+            useip: 1
+            ip: '{{ ansible_host }}'
+            dns: ''
+            port: 10050
+      tags:
+        - always
+        - register

@@ -1,0 +1,23 @@
+---
+logstash:
+  ports:
+    syslog: 10514
+    filebeat: 5044
+    nxlog: 5140
+  node:
+    listener: false
+    filter: false
+
+  templates:
+    listener:
+      - 001-syslog-input.conf
+      - 002-filebeat-input.conf
+      - 003-nxlog-input.conf
+      - 099-redis-output.conf
+    filter:
+      - 101-redis-input.conf
+      - 111-syslog-filter.conf
+      - 112-apache-filter.conf
+      - 113-passreset-filter.conf
+      - 114-nxlog-filter.conf
+      - 199-elastic-output.conf

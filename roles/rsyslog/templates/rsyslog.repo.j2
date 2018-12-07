@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+[rsyslog_v7]
+name=Adiscon CentOS-$releasever - local packages for $basearch
+baseurl=http://rpms.adiscon.com/v7-stable/epel-{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/
+enabled=1
+gpgcheck=0
+gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
+protect=1

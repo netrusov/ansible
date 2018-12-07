@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+PidFile=/var/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFileSize=20
+Server={{ zabbix.server.ip }}
+ServerActive={{ zabbix.server.ip }}
+Hostname={{ inventory_hostname }}
+Include=/etc/zabbix/zabbix_agentd.d/

@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+filter {
+    if [type] == 'passreset' {
+        grok {
+            match => {
+                "message" => "%{TIMESTAMP_ISO8601:timestamp} card:%{NUMBER:card} %{WORD:username} %{GREEDYDATA:message}"
+            }
+            overwrite => [ "message" ]
+        }
+        date {
+            match => [ "timestamp", "yyyy-MM-dd HH:mm:ss" ]
+            remove_field => [ "timestamp" ]
+        }
+    }
+}

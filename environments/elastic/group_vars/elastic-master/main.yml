@@ -1,0 +1,4 @@
+---
+elastic:
+  node:
+    master: true

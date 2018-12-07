@@ -1,0 +1,14 @@
+---
+- name: Add beats GPG key
+  rpm_key:
+    key: http://packages.elasticsearch.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Configure beats repo
+  copy:
+    src: beats.repo
+    dest: /etc/yum.repos.d/beats.repo
+    mode: 0644
+
+- name: Install filebeat
+  yum: name=filebeat state=latest

@@ -1,0 +1,9 @@
+---
+- name: copy rpm key
+  rpm_key: "key=https://packages.elastic.co/GPG-KEY-elasticsearch state=present"
+
+- name: copy kibana.repo
+  copy: src=kibana.repo dest=/etc/yum.repos.d/kibana.repo
+
+- name: install kibana via yum
+  yum: name=kibana state=latest

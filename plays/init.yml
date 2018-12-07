@@ -1,0 +1,49 @@
+---
+- hosts: '{{ host }}'
+  become: yes
+  vars:
+    - firewall:
+        5: iptables
+        6: iptables
+        7: firewalld
+
+  handlers:
+    - name: restart-sshd
+      service: name=sshd state=restarted
+
+  tasks:
+    - name: Set hostname
+      hostname: name='{{ inventory_hostname }}'
+
+    - name: Disable firewall
+      service: name='{{ firewall[ansible_distribution_major_version|int] }}' state=stopped enabled=no
+
+    - name: Disable SELinux
+      selinux: state=disabled
+
+    - name: Copy banner file
+      copy:
+        src: /etc/banner
+        dest: /etc/banner
+
+    - name: Enable login banner
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?[\s+]?Banner'
+        line: 'Banner /etc/banner'
+        state: present
+      notify: restart-sshd
+
+    - name: Disable root login
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?[\s+]?PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+      notify: restart-sshd
+
+    - name: Disable Ctrl-Alt-Del combination
+      lineinfile:
+        dest: /etc/inittab
+        regexp: 'ctrlaltdel'
+        state: absent

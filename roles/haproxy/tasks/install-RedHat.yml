@@ -1,0 +1,6 @@
+---
+- name: Ensure EPEL repository is present
+  yum: name=epel-release state=latest
+
+- name: Install HAProxy
+  yum: name=haproxy state=latest

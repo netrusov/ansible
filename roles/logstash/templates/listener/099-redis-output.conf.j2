@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+output {
+  redis {
+    host => '{{ groups['redis'][0] }}'
+    data_type => 'list'
+    key => 'logstash'
+  }
+}

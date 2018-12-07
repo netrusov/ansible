@@ -1,0 +1,16 @@
+---
+- name: Ensure data directory exists
+  file:
+    name: '{{ elastic.path.data }}/{{ elastic.cluster.name }}'
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0755
+    state: directory
+
+- name: Ensure logs directory exists
+  file:
+    name: '{{ elastic.path.logs }}'
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0755
+    state: directory

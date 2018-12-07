@@ -1,0 +1,9 @@
+/.idea/
+
+/.tool-versions
+
+/environments/
+/hosts/
+/tmp/
+
+!/environments/elastic/

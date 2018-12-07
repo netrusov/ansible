@@ -1,0 +1,20 @@
+---
+- include: configure-data.yml
+  when: elastic.node.data|default(false)
+
+- include: configure-master.yml
+  when: elastic.node.master|default(false)
+
+- include: configure-balancer.yml
+  when: elastic.node.balancer|default(false)
+
+- name: Configure Elasticsearch
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    group: elasticsearch
+    backup: yes
+  notify: restart-elasticsearch
+
+- name: Ensure Elasticsearch is started and enabled
+  service: name=elasticsearch state=started enabled=yes
